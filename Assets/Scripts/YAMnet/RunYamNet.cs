@@ -113,6 +113,8 @@ public class RunYamNet : MonoBehaviour
         }
         catch (Exception e)
         {
+
+
             Debug.LogError($"An error occurred in LateUpdate: {e.ToString()}");
         }
         finally
