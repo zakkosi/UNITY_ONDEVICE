@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bd725b9efea3f54f9733f8bbc2007d1, type: 3}
+  m_Name: StartRotationCommand
+  m_EditorClassIdentifier: 
+  keywords:
+  - "query: \uD68C\uC804"
+  - "query: \uB85C\uD14C\uC774\uC158"
+  - "query: \uC2DC\uC791"
+  - "query: \uB3CC\uC544\uAC00\uAC8C \uD574\uC918"
+  - "query: \uC6C0\uC9C1\uC774\uAC8C \uD574\uC918"
+  - "query: \uB3D9\uC791"
+  - "query: \uB3CC\uB824\uC918"

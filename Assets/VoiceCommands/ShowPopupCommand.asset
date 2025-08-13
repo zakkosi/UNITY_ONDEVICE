@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bd725b9efea3f54f9733f8bbc2007d1, type: 3}
+  m_Name: ShowPopupCommand
+  m_EditorClassIdentifier: 
+  keywords:
+  - "query: \uD31D\uC5C5"
+  - "query: \uC1FC\uD31D\uC5C5"
+  - "query: \uC720\uC544\uC774\uCC3D"
+  - "query: \uB744\uC6CC\uC918"
+  - "query: \uC5F4\uC5B4\uC918"
+  - "query: \uC0C8\uB85C\uC6B4 \uCC3D"
+  - "query: \uACF5\uC9C0\uC0AC\uD56D"
