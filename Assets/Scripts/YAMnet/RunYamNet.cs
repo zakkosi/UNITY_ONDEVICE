@@ -39,10 +39,7 @@ public class RunYamNet : MonoBehaviour
     public RealtimeWhisper onDeviceWhisper;
     public VoiceUIController uiController;
 
-    // --- 삭제: 불필요한 외부 스크립트 참조 ---
-    // public CapturePassthrough capturePassthrough;
-    // public PanelManager panelManager;
-    // public QueryManager querySender;
+    private bool isShuttingDown = false;
 
     void Awake()
     {
@@ -113,8 +110,6 @@ public class RunYamNet : MonoBehaviour
         }
         catch (Exception e)
         {
-
-
             Debug.LogError($"An error occurred in LateUpdate: {e.ToString()}");
         }
         finally
@@ -127,7 +122,7 @@ public class RunYamNet : MonoBehaviour
 
     private async Task<int> Inference(float[] resampledBuffer)
     {
-        if (worker == null) return -1;
+        if (isShuttingDown || worker == null) return -1;
 
         using var inputTensor = new Unity.InferenceEngine.Tensor<float>(new Unity.InferenceEngine.TensorShape(resampledBuffer.Length), resampledBuffer);
         worker.SetInput(modelWithArgMax.inputs[0].name, inputTensor);
@@ -188,6 +183,7 @@ public class RunYamNet : MonoBehaviour
 
     private void OnDestroy()
     {
+        isShuttingDown = true;
         worker?.Dispose();
     }
 }

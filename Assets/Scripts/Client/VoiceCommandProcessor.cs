@@ -34,8 +34,7 @@ public class VoiceCommandProcessor : MonoBehaviour
         InitializeCommands();
     }
 
-
-    // [현재] AI 모델이 없으므로, 테스트를 위해 키보드 입력을 사용합니다.
+    /*
     void Update()
     {
         // 숫자 1 키를 누르면 확대 명령(zoomIn)의 Invoke() 함수를 호출합니다.
@@ -87,7 +86,7 @@ public class VoiceCommandProcessor : MonoBehaviour
             reset?.Invoke();
         }
     }
-
+    */
     public void ProcessTextCommand(string recognizedText)
     {
         Debug.Log("음성 인식 결과 수신: " + recognizedText);

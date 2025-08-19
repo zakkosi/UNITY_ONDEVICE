@@ -1,3 +1,5 @@
+// E5Model.cs 최종 수정본
+
 using UnityEngine;
 using Microsoft.ML.Tokenizers;
 using System.IO;
@@ -13,7 +15,8 @@ public class E5Model : MonoBehaviour
     public ModelAsset modelAsset;
 
     [Header("토크나이저 설정")]
-    public string tokenizerModelFileName = "sentencepiece.bpe.model";
+    // [수정] 파일 이름 대신 TextAsset으로 직접 연결받도록 변경
+    public TextAsset tokenizerAsset;
 
     private SentencePieceTokenizer tokenizer;
     private Worker engine;
@@ -24,34 +27,36 @@ public class E5Model : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Initialize();
+        Initialize(); // Awake에서 바로 초기화를 호출
     }
 
     void Initialize()
     {
+        // ONNX 모델 로딩
         var model = ModelLoader.Load(modelAsset);
         engine = new Worker(model, BackendType.GPUCompute);
 
-        var tokenizerPath = Path.Combine(Application.streamingAssetsPath, tokenizerModelFileName);
-        if (File.Exists(tokenizerPath))
+        // [수정] 인스펙터에 연결된 tokenizerAsset이 있는지 확인
+        if (tokenizerAsset != null)
         {
-            using (var modelStream = new FileStream(tokenizerPath, FileMode.Open, FileAccess.Read))
+            // [수정] TextAsset의 byte 데이터를 메모리 스트림으로 변환하여 사용 (모든 플랫폼에서 작동)
+            using (var modelStream = new MemoryStream(tokenizerAsset.bytes))
             {
                 tokenizer = SentencePieceTokenizer.Create(modelStream);
             }
             isReady = true;
-            Debug.Log("E5 모델(베이스) 및 토크나이저 준비 완료");
+            Debug.Log("<color=cyan>E5 모델 및 토크나이저 준비 완료 (TextAsset 방식)</color>");
         }
         else
         {
-            Debug.LogError($"토크나이저 파일을 찾을 수 없습니다: {tokenizerPath}");
+            Debug.LogError("E5Model 인스펙터의 'Tokenizer Asset' 슬롯에 토크나이저(.bytes) 파일이 연결되지 않았습니다!");
             isReady = false;
         }
     }
 
     public float[] GetEmbedding(string text)
     {
-        if (!isReady) { Debug.LogError("E5 모델이 준비되지 않았습니다."); return null; }
+        if (!isReady) { Debug.LogError("E5 모델이 준비되지 않았습니다. 초기화 에러를 확인하세요."); return null; }
 
         string prefixedText = "query: " + text;
 
@@ -76,7 +81,6 @@ public class E5Model : MonoBehaviour
         using var outputTensor = (engine.PeekOutput() as Tensor<float>).ReadbackAndClone();
         float[] rawOutput = outputTensor.DownloadToArray();
 
-        // 2. C#���� ���� ��ó��
         return MeanPooling(rawOutput, attentionMask.ToArray(), outputTensor.shape);
     }
 
